@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #3f3f46;
+}
+
+.App {
+    position: relative;
+    z-index: 1;
+}
+
+.App:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: url("./assets/pattern.jpg") no-repeat center center fixed;
+    filter: grayscale(100%);
+    background-size: cover;
+    mix-blend-mode: soft-light;
+    opacity: 0.3;
+    z-index: -1;
+}
