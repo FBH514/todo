@@ -11,7 +11,7 @@ export default function Textarea(props: {params: TextareaProps, className?: stri
 
     const classes = {
         defined: props.className,
-        fallback: "h-full w-full rounded-md bg-zinc-300 mix-blend-soft-light text-zinc-950 font-bold outline-none placeholder:text-zinc-950 text-3xl shadow-lg p-4"
+        fallback: "h-full w-full rounded-md bg-zinc-300 text-zinc-950 font-bold outline-none placeholder:text-zinc-950 text-3xl shadow-lg p-4"
     };
 
     return <textarea

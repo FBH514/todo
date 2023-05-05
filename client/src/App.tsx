@@ -96,11 +96,14 @@ function App(): JSX.Element {
 
     return (
         <div
-            className={"bg-gradient-to-br from-sky-800 via-rose-500 to-yellow-300 text-zinc-50 h-screen p-8 flex flex-col items-center justify-center gap-4 App"}>
+            className={"bg-gradient-to-br from-yellow-300 via-rose-500 to-sky-800 text-zinc-50 h-screen grid grid-rows-3 gap-4 p-8 App"}
+            style={{gridTemplateRows: "fit-content(100%) fit-content(100%) 1fr"}}
+        >
+            <Socials/>
             <div
                 className={"grid grid-cols-3 w-full gap-4"}
                 style={{gridTemplateColumns: "1fr 3fr 1fr"}}>
-                <div className={"flex items-center gap-4 text-6xl w-full mix-blend-soft-light"}>
+                <div className={"flex items-center gap-4 text-6xl w-full mix-blend-overlay"}>
                     <div>{date.month}</div>
                     <div>{date.day},</div>
                     <div>{date.year}</div>
@@ -108,21 +111,23 @@ function App(): JSX.Element {
                 <Input params={{placeholder: "Enter a todo", ref: inputRef}}/>
                 <Button params={{value: "Add", onClick: handleSubmit}}/>
             </div>
-            <div className={"grid grid-cols-2 h-full w-full gap-4"} style={{gridTemplateColumns: "1fr 1fr"}}>
-                <div className={"h-full w-full flex flex-col gap-4 items-start"}>
+            <div className={"grid grid-cols-2 h-full w-full gap-4 overflow-hidden"}
+                 style={{gridTemplateColumns: "1fr 1fr"}}>
+                <div
+                    className={"h-full w-full flex flex-col gap-4 items-start overflow-y-scroll bg-zinc-300 mix-blend-overlay rounded-md p-4"}>
                     {sightings.map((item) => (
                         <Todos newTodo={item.sighting} key={item.id}/>
                     ))}
                 </div>
                 <div className={"h-full w-full"}>
                     <textarea
-                        className={"h-full w-full rounded-md bg-zinc-300 mix-blend-soft-light text-zinc-950 font-bold outline-none placeholder:text-zinc-950 text-3xl shadow-lg p-4"}
+                        className={"h-full w-full rounded-md bg-zinc-300 text-zinc-950 font-bold outline-none placeholder:text-zinc-950 text-3xl shadow-lg p-4 resize-none mix-blend-overlay"}
                         onChange={(e) => setTextboxValue(e.target.value)}
                         defaultValue={textboxValue}
+                        placeholder={"Enter notes"}
                     />
                 </div>
             </div>
-            <Socials/>
         </div>
     )
 }

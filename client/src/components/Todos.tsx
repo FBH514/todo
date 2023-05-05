@@ -3,8 +3,8 @@ import Input from "./Input.tsx";
 export default function Todos(props: { newTodo: string }): JSX.Element {
 
     return (
-        <div className={"rounded-md px-4 py-2 bg-zinc-300 flex items-center justify-between mix-blend-soft-light w-full"}>
-            <div className={"text-3xl text-center text-zinc-950 font-bold"}>
+        <div className={"rounded-md px-4 py-2 bg-zinc-800 flex items-center justify-between w-full"}>
+            <div className={"text-3xl text-center text-zinc-300 font-bold"}>
                 {props.newTodo}
             </div>
             <div>

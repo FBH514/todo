@@ -4,9 +4,9 @@ interface SocialProps {
     icon: string;
 }
 
-const SIZE = 32;
-// const COLOR = "3f3f46";
+const SIZE = 48;
 const COLOR = "d4d4d8";
+// const COLOR = "3f3f46";
 
 const data: SocialProps[] = [
     {
@@ -29,9 +29,9 @@ const data: SocialProps[] = [
 export default function Socials(): JSX.Element {
 
     return (
-        <div className={"flex items-center justify-center gap-4 mix-blend-soft-light"}>
+        <div className={"flex items-center justify-center gap-4 mix-blend-overlay"}>
             {data.map((item) => (
-                <a href={item.link} className={"hover:-translate-y-5"} key={item.name}>
+                <a href={item.link} className={"hover:-translate-y-2"} key={item.name}>
                     <img src={item.icon} alt={item.name} key={item.name}/>
                 </a>
             ))}

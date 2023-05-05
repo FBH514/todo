@@ -11,7 +11,7 @@ export default function Input(props: {params: InputProps, className?: string, id
 
     const classes = {
         defined: props.className,
-        fallback: "py-2 px-4 rounded-md bg-zinc-300 mix-blend-soft-light text-zinc-950 font-bold outline-none placeholder:text-zinc-950 text-3xl w-full shadow-lg h-full"
+        fallback: "py-2 px-4 rounded-md bg-zinc-300 text-zinc-950 font-bold outline-none placeholder:text-zinc-950 text-3xl w-full shadow-lg h-full mix-blend-overlay"
     }
 
     return <input
