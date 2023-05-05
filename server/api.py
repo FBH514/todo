@@ -17,6 +17,7 @@ app.add_middleware(
     allow_credentials=True
 )
 
+
 class Cache:
     """Defines the Cache decorator object."""
 
@@ -33,40 +34,56 @@ class Cache:
         :param function: callable
         :return: callable
         """
+
         def wrapper(*args, **kwargs) -> callable:
             response: Response = args[0]
             response.headers['Cache-Control'] = "public, max-age={}".format(self.minutes)
             return function(*args, **kwargs)
+
         return wrapper
 
 
 @Cache(15)
-@app.get("/sightings/")
-async def get_sightings(response: Response) -> list:
+@app.get("/todos/")
+async def get_todos(response: Response) -> list:
     with Database(os.getenv("DB_NAME")) as db:
         data = []
         for row in db.execute(os.getenv("SELECT_ALL")):
             data.append({
                 "id": row[0],
-                "sighting": row[1],
+                "todo": row[1],
             })
         return data
 
 
-@app.post("/sightings/add")
-async def add_sightings(response: Response, request: Request) -> dict:
+@app.post("/todos/add")
+async def add_todos(response: Response, request: Request) -> dict:
     """
-    Adds a sighting to the database.
+    Adds a todo to the database.
     :param response: Response
     :param request: Request
     :return: dict
     """
     with Database(os.getenv("DB_NAME")) as db:
         data = await request.json()
-        sighting = data.get("sighting")
-        print(data)
-        if not sighting:
+        todo = data.get("todo")
+        if not todo:
             response.status_code = 400
-            return {"error": "Sighting cannot be empty."}
-        db.execute(os.getenv("INSERT_SIGHTING"), {"sighting": sighting})
-        return {"success": "Sighting added successfully."}
+            return {"error": "todo cannot be empty."}
+        db.execute(os.getenv("INSERT_TODO"), {"todo": todo})
+        return {"success": "todo added successfully."}
+
+
+@app.delete("/todos/delete/")
+async def remove_todos(response: Response, request: Request) -> dict:
+    """
+    Removes a todo from the database.
+    :param response: Response
+    :param request: Request
+    :return: dict
+    """
+    data = await request.json()
+    todo_id = data.get("id")
+    with Database(os.getenv("DB_NAME")) as db:
+        db.execute(os.getenv("DELETE_TODO"), {"id": todo_id})
+        return {"success": "todo removed successfully."}

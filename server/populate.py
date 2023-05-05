@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 with Database(os.getenv("DB_NAME")) as db:
     db.execute(
         """
-        INSERT INTO sightings (sighting) VALUES (:sighting)
-        """,
-        {"sighting": "I saw a bear!"}
+        CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, todo TEXT)
+        """
     )

@@ -40,7 +40,7 @@ class Database:
         :return: str
         """
         return self._name
-    
+
     @database_name.setter
     def database_name(self, value: str) -> None:
         """
@@ -85,15 +85,10 @@ class Database:
         :return: Optional[List[tuple]]
         """
         if not sql:
-            raise ValueError()
-        if not data and not sql.startswith("SELECT"):
-            with self.conn:
-                self.cur.execute(sql)
+            raise ValueError("SQL statement cannot be empty.")
+        if data:
+            self.cur.execute(sql, data)
             self.commit()
-        elif not data and sql.startswith("SELECT"):
-            with self.conn:
-                self.cur.execute(sql)
-            return self.cur.fetchall()
         else:
-            with self.conn:
-                self.cur.execute(sql, data)
+            self.cur.execute(sql)
+            return self.cur.fetchall()

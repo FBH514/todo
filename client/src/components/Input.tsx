@@ -19,5 +19,7 @@ export default function Input(props: {params: InputProps, className?: string, id
         placeholder={props.params.placeholder}
         ref={props.params.ref}
         className={props.className ? classes.defined : classes.fallback}
+        id={props.id}
+        onChange={props.params.onChange}
     />
 }

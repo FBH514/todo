@@ -5,14 +5,15 @@ import {useEffect, useRef, useState} from "react";
 import Button from "./components/Button.tsx";
 import Socials from "./components/Socials.tsx";
 
-interface SightingProps {
+interface todoProps {
     id: number;
-    sighting: string;
+    todo: string;
 }
 
-enum Endpoints {
-    SIGHTINGS = "http://localhost:8000/sightings",
-    CREATE = "http://localhost:8000/sightings/add"
+export enum Endpoints {
+    TODOS = "http://localhost:8000/todos",
+    CREATE = "http://localhost:8000/todos/add",
+    DELETE = "http://localhost:8000/todos/delete"
 }
 
 async function GET(endpoint: string): Promise<any> {
@@ -24,14 +25,14 @@ const POST_BODY = (newData: any) => {
     return {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({sighting: newData})
+        body: JSON.stringify({todo: newData})
     }
 }
 
 async function POST(endpoint: string, newData: any): Promise<any> {
     const response = await fetch(endpoint, POST_BODY(newData));
-    const {sighting} = await response.json();
-    return sighting;
+    const {todo} = await response.json();
+    return todo;
 }
 
 function getDate(): { month: string, day: number, year: number } {
@@ -48,7 +49,7 @@ function App(): JSX.Element {
     const inputRef = useRef<HTMLInputElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [textboxValue, setTextboxValue] = useState("");
-    const {data: sightings, error} = useQuery<SightingProps[]>("sightings", () => GET(Endpoints.SIGHTINGS));
+    const {data: todos, error} = useQuery<todoProps[]>("todos", () => GET(Endpoints.TODOS));
     const date = getDate();
 
     useEffect(() => {
@@ -69,23 +70,23 @@ function App(): JSX.Element {
     })
 
     useEffect(() => {
-        const stored = window.localStorage.getItem("sightings");
+        const stored = window.localStorage.getItem("todos");
         if (stored) {
             setTextboxValue(stored);
         }
     }, []);
 
     useEffect(() => {
-        window.localStorage.setItem("sightings", textboxValue);
+        window.localStorage.setItem("todos", textboxValue);
     }, [textboxValue]);
 
     const {mutate} = useMutation((newData: any) => POST(Endpoints.CREATE, newData), {
-        onSuccess: () => queryCache.invalidateQueries("sightings"),
+        onSuccess: () => queryCache.invalidateQueries("todos"),
         onError: (error) => console.error(error)
     });
 
     if (error) return <span>Error Loading data</span>;
-    if (!sightings) return <span>Loading...</span>;
+    if (!todos) return <span>Loading...</span>;
 
     function handleSubmit(): void {
         mutate(inputRef.current?.value);
@@ -115,8 +116,8 @@ function App(): JSX.Element {
                  style={{gridTemplateColumns: "1fr 1fr"}}>
                 <div
                     className={"h-full w-full flex flex-col gap-4 items-start overflow-y-scroll bg-zinc-300 mix-blend-overlay rounded-md p-4"}>
-                    {sightings.map((item) => (
-                        <Todos newTodo={item.sighting} key={item.id}/>
+                    {todos.map((item) => (
+                        <Todos newTodo={item.todo} key={item.id} id={item.id.toString()}/>
                     ))}
                 </div>
                 <div className={"h-full w-full"}>
